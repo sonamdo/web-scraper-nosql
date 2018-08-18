@@ -2,14 +2,15 @@ var request = require('request');
 var cheerio = require('cheerio');
 var fs = require('fs');
 var getSellingPrice = require('../getSellingPrice');
+var loadProducts = require('../loadProducts');
 
-const fields = ['name', 'model', 'brand', 'price'];
+const fields = ['website', 'model', 'brand', 'price'];
 
 var productList = [];
 
 class Product {
-  constructor(name, model, brand, price){
-    this.name = name;
+  constructor(website, model, brand, price){
+    this.website = website;
     this.model = model;
     this.brand = brand;
     this.price = price
@@ -18,7 +19,7 @@ class Product {
 
 const gears = () => {
 
-  var name = 'Gears'
+  var website = 'Gears'
 
   for (let i = 1; i < 160; i += 30){
     request("https://shop.gearsbikeshop.com/product-list/bikes-1000/?startRow=" + i, function(error, response, body)
@@ -40,10 +41,12 @@ const gears = () => {
 
          price = price.concat(price1, price2, price3)
 
-         productList.push(new Product (name, model, brand, price));
+         productList.push(new Product (website, model, brand, price));
          productList = getSellingPrice(productList);
+         // fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
+         loadProducts(productList);
        });
-       fs.appendFile('ProductList.js',JSON.stringify(productList)+',');
+
        productList = [];
     });
   }

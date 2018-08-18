@@ -2,14 +2,15 @@ var request = require('request');
 var cheerio = require('cheerio');
 var fs = require('fs');
 var getSellingPrice = require('../getSellingPrice');
+var loadProducts = require('../loadProducts');
 
-const fields = ['name', 'model', 'brand', 'price'];
+const fields = ['website', 'model', 'brand', 'price'];
 
 var productList = [];
 
 class Product {
-  constructor(name, model, brand, price){
-    this.name = name;
+  constructor(website, model, brand, price){
+    this.website = website;
     this.model = model;
     this.brand = brand;
     this.price = price
@@ -19,7 +20,7 @@ class Product {
 var corbbets = () => {
 
   var https = require('https');
-  var name = 'Corbbets';
+  var website = 'Corbbets';
   var agentOptions;
   var agent;
 
@@ -51,10 +52,12 @@ var corbbets = () => {
        var model = $(this).find('.product-details > .product-title').text().trim();
        var price = $(this).find('.product-details > .product-price').text().trim();
 
-       productList.push(new Product (name, model, brand, price));
+       productList.push(new Product (website, model, brand, price));
        productList = getSellingPrice(productList);
+       // fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
+       loadProducts(productList);
      });
-     fs.appendFile('ProductList.js',JSON.stringify(productList)+',');
+
      productList = [];
     });
   }

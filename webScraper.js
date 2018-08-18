@@ -13,8 +13,8 @@ var broadway = require ('./websites/broadway.js');
 
 //each function scrapes the corresponding website for products and prices
 //at the moment its set up for bike products however we can adjust the urls for other categories
-// sportingLife();
-// gears();
-// corbbets();
+sportingLife();
+gears();
+corbbets();
 bikezone();
-// broadway();
+broadway();
