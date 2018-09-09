@@ -33,6 +33,7 @@ const bikezone = () => {
 
       var $ = cheerio.load(body);
        $('.Odd').each(function( index ) {
+        productList = [];
         var brand = "";
         var model = $(this).find('.pname').text().trim();
         var price = $(this).find('.p-price').text().trim();
@@ -41,10 +42,23 @@ const bikezone = () => {
         productList.push(new Product (website, model, brand, price, link));
         productList = getSellingPrice(productList);
         fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
+        console.log(model)
         // loadProducts(productList);
        });
+       
+       $('.Even').each(function( index ) {
+        productList = [];
+        var brand = "";
+        var model = $(this).find('.pname').text().trim();
+        var price = $(this).find('.p-price').text().trim();
+        var link = "http://thebikezone.com/" + model.replace(/\s+/g, '-');
 
-       productList = [];
+        productList.push(new Product (website, model, brand, price, link));
+        productList = getSellingPrice(productList);
+        fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
+        console.log(model)
+        // loadProducts(productList);
+       });
     });
   }
 }

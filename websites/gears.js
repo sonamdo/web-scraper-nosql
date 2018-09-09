@@ -22,7 +22,7 @@ const gears = () => {
 
   var website = 'Gears'
 
-  for (let i = 1; i < 160; i += 30){
+  for (let i = 1; i < 150; i += 30){
     request("https://shop.gearsbikeshop.com/product-list/bikes-1000/?startRow=" + i, function(error, response, body)
     {
 
@@ -33,14 +33,15 @@ const gears = () => {
 
       var $ = cheerio.load(body);
        $('.seitem').each(function( index ) {
+         productList = [];
+
          var model = $(this).find('.seitemdata > h5').text().trim();
          var brand = "";
          var price = "";
          var price1 = $(this).find('.seregularprice').text().trim();
          var price2 = $(this).find('.sespecialprice').text().trim();
          var price3 = $(this).find('.seoriginalprice').text().trim();
-         var link = "https://shop.gearsbikeshop.com/product/" + model.replace(/\s+/g, '-') + ".htm";
-         var link = link.replace('---', '-')
+         var link = "https://shop.gearsbikeshop.com" + $(this).find('.seitemdata > h5 > a').attr('href')
 
          price = price.concat(price1, price2, price3)
 
@@ -49,8 +50,6 @@ const gears = () => {
          fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
          // loadProducts(productList);
        });
-
-       productList = [];
     });
   }
 }

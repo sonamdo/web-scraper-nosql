@@ -10,11 +10,13 @@ var corbbets = require ('./websites/corbbets.js');
 var gears = require ('./websites/gears.js');
 var bikezone = require ('./websites/bikezone.js');
 var broadway = require ('./websites/broadway.js');
+var skiisandbiikes = require ('./websites/skiisandbiikes.js');
 
 //each function scrapes the corresponding website for products and prices
 //at the moment its set up for bike products however we can adjust the urls for other categories
-sportingLife();
-// gears();
 // corbbets();
+// sportingLife();
+// gears();
 // bikezone();
 // broadway();
+skiisandbiikes();

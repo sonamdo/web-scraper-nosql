@@ -18,15 +18,15 @@ class Product {
   }
 }
 
-var corbbets = () => {
+var skiisandbiikes = () => {
 
   var https = require('https');
-  var website = 'Corbbets';
+  var website = 'Skiisandbiikes';
   var agentOptions;
   var agent;
 
   var agentOptions = {
-    host: 'www.corbetts.com'
+    host: 'www.skiisandbiikes.com'
   , port: '443'
   , path: '/'
   , rejectUnauthorized: false
@@ -36,7 +36,7 @@ var corbbets = () => {
 
   for (let i = 1; i < 2; i++){
     request({
-    url: "https://www.corbetts.com/categories/ski/skis.html#?Category0=ski&Category1=skis&search_return=all&page=" + i,
+    url: "https://skiisandbiikes.com/pages/search-results-page?collection=road&page=" + i,
     method: 'GET',
     agent: agent
   }
@@ -45,23 +45,26 @@ var corbbets = () => {
     if(error) {
       console.log("Error: " + error);
     }
-    // console.log("Status code: " + response.statusCode);
+      console.log("Status code: " + response.statusCode);
 
     var $ = cheerio.load(body);
-     $('.product-grid-item').each(function( index ) {
+    $('.snize-product').each(function( index ) {
       productList = [];
-       var brand = $(this).find('.product-details > .product-brand').text().trim();
-       var model = $(this).find('.product-details > .product-title').text().trim();
-       var price = $(this).find('.product-details > .product-price').text().trim();
-       var link = "https://www.corbetts.com/" + model.replace(/\s+/g, '-')
 
-       productList.push(new Product (website, model, brand, price, link));
-       productList = getSellingPrice(productList);
-       fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
-       // loadProducts(productList);
-     });
+      var brand = "";
+      var model = $(this).find('.product-title').text().trim();
+      var price = $(this).find('span.amount').text().trim();
+      var link2 = "https://bikedepot.com/product/" + model.replace(/\s+/g, '-');
+      var link = link2.replace('-–-', '-')
+      console.log
+
+      productList.push(new Product (website, model, brand, price, link));
+      productList = getSellingPrice(productList);
+      fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
+      // loadProducts(productList);
+      });
     });
   }
 }
 
-module.exports = corbbets
+module.exports = skiisandbiikes

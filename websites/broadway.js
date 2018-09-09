@@ -22,7 +22,7 @@ const broadway = () => {
 
   var website = 'Broadway'
 
-  for (let i = 1; i < 10; i++){
+  for (let i = 1; i < 2; i++){
     request("https://bikedepot.com/product-category/bikes/page/" + i + "/?et_per_page=36", function(error, response, body)
     {
 
@@ -33,6 +33,8 @@ const broadway = () => {
 
       var $ = cheerio.load(body);
        $('.content-product').each(function( index ) {
+         productList = [];
+
          var brand = "";
          var model = $(this).find('.product-title').text().trim();
          var price = $(this).find('span.amount').text().trim();
@@ -46,7 +48,6 @@ const broadway = () => {
          // loadProducts(productList);
        });
 
-       productList = [];
     });
   }
 }
