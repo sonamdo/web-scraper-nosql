@@ -9,11 +9,12 @@ const fields = ['website', 'model', 'brand', 'price'];
 var productList = [];
 
 class Product {
-  constructor(website, model, brand, price){
+  constructor(website, model, brand, price, link){
     this.website = website;
     this.model = model;
     this.brand = brand;
-    this.price = price
+    this.price = price;
+    this.link = link;
   }
 }
 
@@ -35,11 +36,14 @@ const broadway = () => {
          var brand = "";
          var model = $(this).find('.product-title').text().trim();
          var price = $(this).find('span.amount').text().trim();
+         var link2 = "https://bikedepot.com/product/" + model.replace(/\s+/g, '-');
+         var link = link2.replace('-–-', '-')
+         console.log
 
-         productList.push(new Product (website, model, brand, price));
+         productList.push(new Product (website, model, brand, price, link));
          productList = getSellingPrice(productList);
-         // fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
-         loadProducts(productList);
+         fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
+         // loadProducts(productList);
        });
 
        productList = [];

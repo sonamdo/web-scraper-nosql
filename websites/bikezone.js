@@ -9,11 +9,12 @@ const fields = ['website', 'model', 'brand', 'price'];
 var productList = [];
 
 class Product {
-  constructor(website, model, brand, price){
+  constructor(website, model, brand, price, link){
     this.website = website;
     this.model = model;
     this.brand = brand;
-    this.price = price
+    this.price = price;
+    this.link = link;
   }
 }
 
@@ -21,7 +22,7 @@ const bikezone = () => {
 
   var website = 'Bikezone'
 
-  for (let i = 1; i < 20; i++){
+  for (let i = 1; i < 72; i++){
     request("http://thebikezone.com/shop-bikes/?sort=featured&page=" + i, function(error, response, body)
     {
 
@@ -34,12 +35,13 @@ const bikezone = () => {
        $('.Odd').each(function( index ) {
         var brand = "";
         var model = $(this).find('.pname').text().trim();
-        var price = $(this).find('.p-price').text().trim();;
+        var price = $(this).find('.p-price').text().trim();
+        var link = "http://thebikezone.com/" + model.replace(/\s+/g, '-');
 
-        productList.push(new Product (website, model, brand, price));
+        productList.push(new Product (website, model, brand, price, link));
         productList = getSellingPrice(productList);
-        // fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
-        loadProducts(productList);
+        fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
+        // loadProducts(productList);
        });
 
        productList = [];

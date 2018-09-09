@@ -18,6 +18,8 @@ const loadProducts = (productList) => {
           Item: {
               "model": product.model,
               "shop": product.name,
+              // "brand": product.brand,
+              // "price": product.price
           //name, model, brand, price
           }
       };

@@ -4,16 +4,15 @@ var fs = require('fs');
 var getSellingPrice = require('../getSellingPrice');
 var loadProducts = require('../loadProducts');
 
-const fields = ['website', 'model', 'brand', 'price'];
-
 var productList = [];
 
 class Product {
-  constructor(website, model, brand, price){
+  constructor(website, model, brand, price, link){
     this.website = website;
     this.model = model;
     this.brand = brand;
-    this.price = price
+    this.price = price;
+    this.link = link;
   }
 }
 
@@ -43,28 +42,30 @@ const sportingLife = () => {
   //   });
   // }
 
-  for (i = 0; i < 5; i++){
-    request("https://www.sportinglife.ca/c/bike-types-road-bikes?howMany=12&sorting=&page=" + i, function(error, response, body)
+  for (let i = 1; i < 2; i++){
+    request("https://www.sportinglife.ca/search/searchResults.jsp?needResults=&currentContext=&_DARGS=/search/facets.jsp_AF&_dynSessConf=-4392655603270447437&_D%3Aqfh_ft=+&qfh_ft=27005%3AFitness+%26+Urban+Bikes&_D%3A/atg/commerce/search/catalog/QueryFormHandler.previousSearchRequest.docSortOrder=+&qfh_fsr=true&/atg/commerce/search/catalog/QueryFormHandler.previousSearchRequest.docSort=numprop&_D%3A/atg/commerce/search/catalog/QueryFormHandler.previousSearchRequest.docSort=+&_D%3Aqfh_fsr=+&_D%3Aqfh_ci=+&/atg/commerce/search/catalog/QueryFormHandler.previousSearchRequest.docSortOrder=ascending&qfh_rct=0371817884&qfh_ci=BIKE_TYPES&_D%3Aqfh_rct=+&/atg/commerce/search/catalog/QueryFormHandler.previousSearchRequest.docSortProp=marketingPriority&_D%3Afh_sr=+&trail=27005%3AFitness+%26+Urban+Bikes&fh_sr=true&_D%3Afh_gtp=+&_D%3A/atg/commerce/search/catalog/QueryFormHandler.previousSearchRequest.docSortProp=+&fh_gtp=" + i, function(error, response, body)
     {
-
+      console.log(i)
       if(error) {
         console.log("Error: " + error);
       }
         console.log("Status code: " + response.statusCode);
+        console.log(i)
 
       var $ = cheerio.load(body);
        $('.product-card').each(function( index ) {
+         productList = [];
          var brand = $(this).find('.product-name > h2').text().trim();
          var model = $(this).find('a > h2').text().trim();
          var price = $(this).find('.price > div').text().trim();
+         var link = $(this).find('.product-name > a').attr('href')
 
-         productList.push(new Product (website, model, brand, price));
+         productList.push(new Product (website, model, brand, price, link));
          productList = getSellingPrice(productList);
-         // fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
-         loadProducts(productList);
+         fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
+         // loadProducts(productList);
        });
 
-       productList = [];
     });
   }
 }

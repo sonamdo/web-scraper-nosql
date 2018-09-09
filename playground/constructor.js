@@ -13,7 +13,7 @@ class Product {
     this.name = name;
     this.model = model;
     this.brand = brand;
-    this.price = price
+    this.price = price;
   }
 }
 
