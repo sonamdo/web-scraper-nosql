@@ -18,7 +18,7 @@ class Product {
   }
 }
 
-var corbbets = () => {
+const corbbets = () => {
 
   var https = require('https');
   var website = 'Corbbets';
@@ -34,7 +34,7 @@ var corbbets = () => {
 
   agent = new https.Agent(agentOptions);
 
-  for (let i = 1; i < 2; i++){
+  for (let i = 1; i < 5; i++){
     request({
     url: "https://www.corbetts.com/categories/ski/skis.html#?Category0=ski&Category1=skis&search_return=all&page=" + i,
     method: 'GET',
@@ -50,6 +50,7 @@ var corbbets = () => {
     var $ = cheerio.load(body);
      $('.product-grid-item').each(function( index ) {
       productList = [];
+
        var brand = $(this).find('.product-details > .product-brand').text().trim();
        var model = $(this).find('.product-details > .product-title').text().trim();
        var price = $(this).find('.product-details > .product-price').text().trim();
@@ -57,7 +58,8 @@ var corbbets = () => {
 
        productList.push(new Product (website, model, brand, price, link));
        productList = getSellingPrice(productList);
-       fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
+       fs.appendFile('SkiList.js',JSON.stringify(productList) + ',');
+       // console.log(model)
        // loadProducts(productList);
      });
     });

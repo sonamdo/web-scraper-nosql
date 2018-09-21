@@ -16,9 +16,9 @@ class Product {
   }
 }
 
-const sportingLife = () => {
+var website = 'Sportinglife'
 
-  var website = 'Sportinglife'
+const sportingLife = () => {
 
   // for (let i = 0; i < 5; i++){
   //   request("https://www.sportinglife.ca/c/adult-alpine-ski-type?howMany=12&sorting=&page=" + i, function(error, response, body)
@@ -55,7 +55,7 @@ const sportingLife = () => {
       var $ = cheerio.load(body);
        $('.product-card').each(function( index ) {
          productList = [];
-         
+
          var brand = $(this).find('.product-name > h2').text().trim();
          var model = $(this).find('a > h2').text().trim();
          var price = $(this).find('.price > div').text().trim();
@@ -63,7 +63,7 @@ const sportingLife = () => {
 
          productList.push(new Product (website, model, brand, price, link));
          productList = getSellingPrice(productList);
-         fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
+         fs.appendFile('BikeList.js',JSON.stringify(productList) + ',');
          // loadProducts(productList);
        });
 
@@ -125,4 +125,33 @@ const sportingLife = () => {
   }
 }
 
-module.exports = sportingLife;
+const SkisSportingLife = () => {
+  for (let i = 1; i < 9; i++){
+    request("https://www.sportinglife.ca/c/adult-alpine-ski-type?howMany=12&sorting=&page=" + i, function(error, response, body)
+    {
+      if(error) {
+        console.log("Error: " + error);
+      }
+        console.log("Status code: " + response.statusCode);
+
+      var $ = cheerio.load(body);
+       $('.product-card').each(function( index ) {
+         productList = [];
+
+         var brand = $(this).find('.product-name > h2').text().trim();
+         var model = $(this).find('a > h2').text().trim();
+         var price = $(this).find('.price > div').text().trim();
+         var link = $(this).find('.product-name > a').attr('href')
+
+         productList.push(new Product (website, model, brand, price, link));
+         productList = getSellingPrice(productList);
+         fs.appendFile('SkiList.js',JSON.stringify(productList) + ',');
+         // loadProducts(productList);
+         // console.log(model)
+       });
+
+    });
+  }
+}
+
+module.exports = {SkisSportingLife, sportingLife};

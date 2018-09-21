@@ -5,6 +5,7 @@ const Json2csvParser = require('json2csv').Parser;
 var https = require('https');
 
 var getSellingPrice = require('./getSellingPrice');
+
 var sportingLife = require ('./websites/sportingLife.js');
 var corbbets = require ('./websites/corbbets.js');
 var gears = require ('./websites/gears.js');
@@ -14,9 +15,12 @@ var skiisandbiikes = require ('./websites/skiisandbiikes.js');
 
 //each function scrapes the corresponding website for products and prices
 //at the moment its set up for bike products however we can adjust the urls for other categories
-// corbbets();
-// sportingLife();
+
+// sportingLife.sportingLife();
 // gears();
 // bikezone();
 // broadway();
 skiisandbiikes();
+
+// sportingLife.SkisSportingLife();
+// corbbets();

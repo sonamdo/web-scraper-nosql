@@ -45,7 +45,7 @@ const bikezone = () => {
         console.log(model)
         // loadProducts(productList);
        });
-       
+
        $('.Even').each(function( index ) {
         productList = [];
         var brand = "";
@@ -55,7 +55,7 @@ const bikezone = () => {
 
         productList.push(new Product (website, model, brand, price, link));
         productList = getSellingPrice(productList);
-        fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
+        fs.appendFile('BikeList.js',JSON.stringify(productList) + ',');
         console.log(model)
         // loadProducts(productList);
        });

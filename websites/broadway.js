@@ -44,7 +44,7 @@ const broadway = () => {
 
          productList.push(new Product (website, model, brand, price, link));
          productList = getSellingPrice(productList);
-         fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
+         fs.appendFile('BikeList.js',JSON.stringify(productList) + ',');
          // loadProducts(productList);
        });
 

@@ -3,6 +3,8 @@ var cheerio = require('cheerio');
 var fs = require('fs');
 var getSellingPrice = require('../getSellingPrice');
 var loadProducts = require('../loadProducts');
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 
 const fields = ['website', 'model', 'brand', 'price'];
 
@@ -34,11 +36,11 @@ var skiisandbiikes = () => {
 
   agent = new https.Agent(agentOptions);
 
-  for (let i = 1; i < 2; i++){
     request({
-    url: "https://skiisandbiikes.com/pages/search-results-page?collection=road&page=" + i,
+    url: "https://skiisandbiikes.com/pages/search-results-page?collection=road&page=2",
     method: 'GET',
-    agent: agent
+    agent: agent,
+    headers: { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36' }
   }
   , function(error, response, body) {
 
@@ -47,24 +49,36 @@ var skiisandbiikes = () => {
     }
       console.log("Status code: " + response.statusCode);
 
-    var $ = cheerio.load(body);
-    $('.snize-product').each(function( index ) {
-      productList = [];
+      const dom = new JSDOM(body,{
+          features: {
+            FetchExternalResources   : ['script'],
+            ProcessExternalResources : ['script'],
+            MutationEvents           : '2.0',
+            runScripts: "dangerously",
+            resources: "usable"
+        }
 
-      var brand = "";
-      var model = $(this).find('.product-title').text().trim();
-      var price = $(this).find('span.amount').text().trim();
-      var link2 = "https://bikedepot.com/product/" + model.replace(/\s+/g, '-');
-      var link = link2.replace('-–-', '-')
-      console.log
-
-      productList.push(new Product (website, model, brand, price, link));
-      productList = getSellingPrice(productList);
-      fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
-      // loadProducts(productList);
-      });
     });
-  }
+      //optional, to run external scripts, { runScripts: "dangerously" , resources: "usable"}
+      // console.log(dom.window.document.querySelector(".snize-product").innerHTML)
+    // var $ = cheerio.load(body);
+    fs.appendFile('SB.html',dom.window.document.querySelector("body").innerHTML);
+    //console.log( $('script').get()[0].attribs['src'] );
+    // $('.snize-product').each(function( index ) {
+    //   console.log("working")
+      // productList = [];
+      //
+      // var brand = "";
+      // var model = $(this).find('.product-title').text().trim();
+      // var price = $(this).find('span.amount').text().trim();
+      // var link = $(this).find('.a').attr('href')
+      //
+      // productList.push(new Product (website, model, brand, price, link));
+      // productList = getSellingPrice(productList);
+      // fs.appendFile('ProductList.js',JSON.stringify(productList) + ',');
+      // loadProducts(productList);
+      // });
+    });
 }
 
 module.exports = skiisandbiikes
